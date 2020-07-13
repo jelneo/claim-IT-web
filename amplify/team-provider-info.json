@@ -1,0 +1,15 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-claimit-dev-180609-authRole",
+            "UnauthRoleArn": "arn:aws:iam::027430423155:role/amplify-claimit-dev-180609-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::027430423155:role/amplify-claimit-dev-180609-authRole",
+            "Region": "us-east-2",
+            "DeploymentBucketName": "amplify-claimit-dev-180609-deployment",
+            "UnauthRoleName": "amplify-claimit-dev-180609-unauthRole",
+            "StackName": "amplify-claimit-dev-180609",
+            "StackId": "arn:aws:cloudformation:us-east-2:027430423155:stack/amplify-claimit-dev-180609/518d12f0-c427-11ea-a435-0a76b6c12f42",
+            "AmplifyAppId": "d1jj3zokwd13du"
+        }
+    }
+}
