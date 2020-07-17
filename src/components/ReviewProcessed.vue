@@ -57,8 +57,8 @@ export default {
   name: "ReviewProcessed",
   data: () => ({
     items: [
-      { title: "Review auto-processed claims", icon: "mdi-desktop-classic", linkTo: "/review-processed" },
-      { title: "Review outliers", icon: "mdi-pen", linkTo: "/review" }
+      { title: "Review outliers", icon: "mdi-pen", linkTo: "/review" },
+      { title: "Review processed claims", icon: "mdi-desktop-classic", linkTo: "/review-processed" }
     ]
   })
 };

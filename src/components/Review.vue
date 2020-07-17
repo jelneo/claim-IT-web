@@ -16,22 +16,29 @@
     </v-app-bar>
     <v-row no-gutters justify="end">
       <v-col lg="10">
-        <!-- <v-container fill-width> -->
-          <v-data-table :headers="claimHeaders" :items="getClaimList" class="elevation-1">
-            <template v-slot:top>
-              <v-toolbar color="blue lighten-4 blue--text text--darken-2" flat>
-                <v-toolbar-title color="blue darken-2">Review Outlier Claims</v-toolbar-title>
-                <v-spacer></v-spacer>
-              </v-toolbar>
-            </template>
-            <template v-slot:item.actions="{ item }">
-              <v-icon small class="mr-2" @click="approve(item)">mdi-check</v-icon>
-              <v-icon small @click="reject(item)">mdi-close</v-icon>
-            </template>
-          </v-data-table>
-        <!-- </v-container> -->
+        <b>What are outlier claims?</b>
+        <p>
+          These claims have been flagged out using unsupervised learning to be of higher risk of being unauthorised.
+          Review the claim by approving or rejecting it and our supervised learning model will learn your decision.
+          Similar future claims will be auto-processed leaving you with less work!
+        </p>
+        <v-data-table :headers="claimHeaders" :items="getClaimList" class="elevation-1">
+          <template v-slot:top>
+            <v-toolbar color="blue lighten-4 blue--text text--darken-2" flat>
+              <v-toolbar-title color="blue darken-2">Review Outlier Claims</v-toolbar-title>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+          </template>
+          <template v-slot:item.actions="{ item }">
+            <v-icon small class="mr-2" @click="approve(item)">mdi-check</v-icon>
+            <v-icon small @click="reject(item)">mdi-close</v-icon>
+          </template>
+          <template v-slot:item.risk="{ item }">
+            <v-chip :color="getColor(item.risk)" dark>{{ item.risk }}</v-chip>
+          </template>
+        </v-data-table>
       </v-col>
-      <v-col md="3">
+      <v-col md="4">
         <v-navigation-drawer absolute permanent width="18%">
           <template v-slot:prepend>
             <v-list-item two-line>
@@ -72,12 +79,12 @@ export default {
   name: "Overview",
   data: () => ({
     items: [
+      { title: "Review outliers", icon: "mdi-pen", linkTo: "/review" },
       {
-        title: "Review auto-processed claims",
+        title: "Review processed claims",
         icon: "mdi-desktop-classic",
         linkTo: "/review-processed"
-      },
-      { title: "Review outliers", icon: "mdi-pen", linkTo: "/review" }
+      }
     ],
     claimHeaders: [
       { text: "Claim Ref", sortable: true, value: "clmRef" },
@@ -101,8 +108,19 @@ export default {
     claimList: []
   }),
   methods: {
+    getColor(isRisky) {
+      if (isRisky) {
+        return "red";
+      }
+      return "green";
+    },
     approve(item) {
-      console.log(item + "approve");
+      this.editedIndex = this.claimList
+        .map(function(x) {
+          return x.clmRef;
+        })
+        .indexOf(item.clmRef);
+      console.log(item.risk + " approve");
     },
     reject(item) {
       console.log(item + "reject");
@@ -136,8 +154,13 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .container {
-  max-width: 95vw;
+  max-width: 94vw;
+}
+</style>
+<style scoped>
+.v-chip {
+  font-size: 0.9em;
 }
 </style>
