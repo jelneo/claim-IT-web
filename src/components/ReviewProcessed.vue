@@ -4,7 +4,7 @@
       <v-row justify="start">
         <v-col lg="1">
           <router-link to="/">
-            <v-img :src="require('../assets/claim_it_logo.png')" contain height="63" />
+            <v-img :src="require('../assets/claim_it_logo.png')" contain height="55" />
           </router-link>
         </v-col>
         <v-row align="center">
@@ -16,23 +16,21 @@
     </v-app-bar>
     <v-row no-gutters justify="end">
       <v-col lg="10">
-        <b>What are processed claims?</b>
+        <b>What are non-risky processed claims?</b>
         <p>
-          These claims have been auto-processed but you can override the decision of the supervised learning model by clicking on the tick to approve or cross to reject the claim.
+          These claims have been auto-processed and labelled as not risky (i.e. high possibility of being an authentic and valid claim) but you can override the decision of the supervised learning model by clicking on the cross to reject the claim.
+          Risky claims are not shown here because they have been rejected automatically and the employee would have to resubmit the claim correctly.
         </p>
         <v-data-table :headers="claimHeaders" :items="getClaimList" class="elevation-1">
           <template v-slot:top>
             <v-toolbar color="blue lighten-4 blue--text text--darken-2" flat>
-              <v-toolbar-title color="blue darken-2">Review Processed Claims</v-toolbar-title>
+              <v-toolbar-title color="blue darken-2">Review Non-risky Processed Claims</v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
           </template>
           <template v-slot:item.actions="{ item }">
-            <v-icon small class="mr-2" @click="approve(item)">mdi-check</v-icon>
+            <!-- <v-icon small class="mr-2" @click="approve(item)">mdi-check</v-icon> -->
             <v-icon small @click="reject(item)">mdi-close</v-icon>
-          </template>
-          <template v-slot:item.risk="{ item }">
-            <v-chip :color="getRiskColor(item.risk)" dark>{{ item.risk }}</v-chip>
           </template>
           <template v-slot:item.status="{ item }">
             <v-chip :color="getStatusColor(item.status)" dark>{{ item.status }}</v-chip>
@@ -103,9 +101,9 @@ export default {
       },
       { text: "Claim purpose", sortable: true, value: "claimPurp" },
       { text: "Journey start time", sortable: true, value: "journeyStartTime" },
-      { text: "Claim amount ($)", sortable: true, value: "claimAmt" },
-      { text: "Flagged as risky", sortable: true, value: "risk" },
-      { text: "Actions", value: "actions", sortable: false }
+      { text: "Claim amount", sortable: true, value: "claimAmt" },
+      // { text: "Flagged as risky", sortable: true, value: "risk" },
+      { text: "Action", value: "actions", sortable: false }
     ],
     claimList: []
   }),
@@ -161,7 +159,7 @@ export default {
     }
   },
   async created() {
-    this.claimList = claims;
+    this.claimList = claims.filter(record => record.RISK == 0);
   }
 };
 </script>
