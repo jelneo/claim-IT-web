@@ -4,7 +4,7 @@
       <v-row justify="start">
         <v-col lg="1">
           <router-link to="/">
-            <v-img :src="require('../assets/claim_it_logo.png')" contain height="63" />
+            <v-img :src="require('../assets/claim_it_logo.png')" contain height="55" />
           </router-link>
         </v-col>
         <v-row align="center">
