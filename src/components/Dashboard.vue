@@ -50,7 +50,7 @@ export default {
   name: "Dashboard",
   data: () => ({
     items: [
-      { title: "Review outliers", icon: "mdi-pen", linkTo: "/review" },
+      { title: "Review current claims", icon: "mdi-pen", linkTo: "/review" },
       {
         title: "Review processed claims",
         icon: "mdi-desktop-classic",

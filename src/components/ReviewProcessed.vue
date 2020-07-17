@@ -1,7 +1,7 @@
 <template>
-  <v-container>
+  <v-container full-width>
     <v-app-bar app color="primary" dark>
-     <v-row justify="start">
+      <v-row justify="start">
         <v-col lg="1">
           <router-link to="/">
             <v-img :src="require('../assets/claim_it_logo.png')" contain height="63" />
@@ -14,8 +14,32 @@
         </v-row>
       </v-row>
     </v-app-bar>
-    <v-row>
-      <v-col sm="2">
+    <v-row no-gutters justify="end">
+      <v-col lg="10">
+        <b>What are processed claims?</b>
+        <p>
+          These claims have been auto-processed but you can override the decision of the supervised learning model by clicking on the tick to approve or cross to reject the claim.
+        </p>
+        <v-data-table :headers="claimHeaders" :items="getClaimList" class="elevation-1">
+          <template v-slot:top>
+            <v-toolbar color="blue lighten-4 blue--text text--darken-2" flat>
+              <v-toolbar-title color="blue darken-2">Review Processed Claims</v-toolbar-title>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+          </template>
+          <template v-slot:item.actions="{ item }">
+            <v-icon small class="mr-2" @click="approve(item)">mdi-check</v-icon>
+            <v-icon small @click="reject(item)">mdi-close</v-icon>
+          </template>
+          <template v-slot:item.risk="{ item }">
+            <v-chip :color="getRiskColor(item.risk)" dark>{{ item.risk }}</v-chip>
+          </template>
+          <template v-slot:item.status="{ item }">
+            <v-chip :color="getStatusColor(item.status)" dark>{{ item.status }}</v-chip>
+          </template>
+        </v-data-table>
+      </v-col>
+      <v-col md="4">
         <v-navigation-drawer absolute permanent width="18%">
           <template v-slot:prepend>
             <v-list-item two-line>
@@ -45,21 +69,109 @@
           </v-list>
         </v-navigation-drawer>
       </v-col>
-      <v-col sm="4">
-        <h1>Review Processed claims</h1>
-      </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import claims from "../assets/data/outliers_output.json";
+
 export default {
   name: "ReviewProcessed",
   data: () => ({
     items: [
-      { title: "Review outliers", icon: "mdi-pen", linkTo: "/review" },
-      { title: "Review processed claims", icon: "mdi-desktop-classic", linkTo: "/review-processed" }
-    ]
-  })
+      { title: "Review current claims", icon: "mdi-pen", linkTo: "/review" },
+      {
+        title: "Review processed claims",
+        icon: "mdi-desktop-classic",
+        linkTo: "/review-processed"
+      }
+    ],
+    claimHeaders: [
+      { text: "Claim Ref", sortable: true, value: "clmRef" },
+      { text: "Status", sortable: true, value: "status" },
+      { text: "Emp Dept", sortable: true, value: "dept" },
+      { text: "Claim system", sortable: true, value: "clmSys" },
+      { text: "Date of travel", sortable: true, value: "trvDT" },
+      { text: "Date of submission", sortable: true, value: "subDT" },
+      { text: "Day of claim", sortable: true, value: "dayOfClaim" },
+      { text: "Day type", sortable: true, value: "dayType" },
+      {
+        text: "Type of transport claim",
+        sortable: true,
+        value: "transportType"
+      },
+      { text: "Claim purpose", sortable: true, value: "claimPurp" },
+      { text: "Journey start time", sortable: true, value: "journeyStartTime" },
+      { text: "Claim amount ($)", sortable: true, value: "claimAmt" },
+      { text: "Flagged as risky", sortable: true, value: "risk" },
+      { text: "Actions", value: "actions", sortable: false }
+    ],
+    claimList: []
+  }),
+  methods: {
+    getRiskColor(isRisky) {
+      if (isRisky) {
+        return "red";
+      }
+      return "green";
+    },
+    getStatusColor(status) {
+      if (status === "Pending") {
+        return "yellow darken-2";
+      }
+      return "green"
+    },
+    approve(item) {
+      // this.editedIndex = this.claimList
+      //   .map(function(x) {
+      //     return x.clmRef;
+      //   })
+      //   .indexOf(item.clmRef);
+      console.log(item.risk + " approve");
+    },
+    reject(item) {
+      console.log(item + "reject");
+    }
+  },
+  computed: {
+    getClaimList() {
+      console.log(typeof(claims[0].Status))
+
+      let items = this.claimList.map(item => ({
+        clmRef: item["CLM.REF"],
+        empID: item.ID,
+        dept: item.DEPT,
+        clmSys: item["CLM.SYS"],
+        trvDT: new Date(item["TRV.DT"]).toLocaleDateString("en-SG"),
+        subDT: new Date(item["CLM.SUB.DT"]).toLocaleDateString("en-SG"),
+        dayOfClaim: item["Travel.Day.Name"].substring(0, 3),
+        dayType: item["Travel.Day.Type"],
+        transportType: item.TYPE,
+        claimPurp: item.PURPOSE,
+        journeyStartTime: item["JOURNEY.STR"],
+        claimAmt: (item["CLM.AMT"] / 1).toLocaleString("en-SG", {
+          style: "currency",
+          currency: "SGD"
+        }),
+        status: item.Status == 0 ? "Approved" : "Pending",
+        risk: item.RISK == 1 ? true : false
+      }));
+      return items;
+    }
+  },
+  async created() {
+    this.claimList = claims;
+  }
 };
 </script>
+<style scoped>
+.container {
+  max-width: 94vw;
+}
+</style>
+<style scoped>
+.v-chip {
+  font-size: 0.9em;
+}
+</style>
