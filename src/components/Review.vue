@@ -18,14 +18,14 @@
       <v-col lg="10">
         <b>What are outlier claims?</b>
         <p>
-          These claims have been flagged out using unsupervised learning to be of higher risk of being unauthorised.
-          Review the claim by approving or rejecting it and our supervised learning model will learn your decision.
+          These claims have been flagged by our unsupervised learning model to have a possibility of being unauthorised.
+          Review the claim by clicking on the tick to approve and the cross to reject and our supervised learning model will learn your decision.
           Similar future claims will be auto-processed leaving you with less work!
         </p>
         <v-data-table :headers="claimHeaders" :items="getClaimList" class="elevation-1">
           <template v-slot:top>
             <v-toolbar color="blue lighten-4 blue--text text--darken-2" flat>
-              <v-toolbar-title color="blue darken-2">Review Outlier Claims</v-toolbar-title>
+              <v-toolbar-title color="blue darken-2">Review Current Claims</v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
           </template>
@@ -73,13 +73,13 @@
 </template>
 
 <script>
-import claims from "../assets/data/outliers_output.json";
+import claims from "../assets/data/validation_output.json";
 
 export default {
-  name: "Overview",
+  name: "Review",
   data: () => ({
     items: [
-      { title: "Review outliers", icon: "mdi-pen", linkTo: "/review" },
+      { title: "Review current claims", icon: "mdi-pen", linkTo: "/review" },
       {
         title: "Review processed claims",
         icon: "mdi-desktop-classic",
