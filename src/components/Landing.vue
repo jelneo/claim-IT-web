@@ -17,35 +17,16 @@
 
         <p
           class="subheading font-weight-regular"
-        >Discover how to simplify your claims pipeline using machine learning</p>
+        >Claims pipeline simplified thanks to you</p>
         <v-btn @click="skipLogin">Try it</v-btn>
       </v-col>
 
       <v-col class="mb-5" cols="12">
-        <h2 class="headline font-weight-bold mb-3">What's next?</h2>
-
+        <h2 class="headline font-weight-bold mb-3">How does it work?</h2>
+        <p>Using past judgement from auditors and current judgement from processing new claims, we create a self-learning model that continuously learns the decision-making process behind approving or rejecting a claim. 
+          This is done by mannually approving or rejecting claims that are flagged as high risk by our unsupervised learning model. High risk claims are defined as claims that have a high possibility of being unauthorised for e.g. personal expenses.</p>
         <v-row justify="center">
-          <a
-            v-for="(next, i) in whatsNext"
-            :key="i"
-            :href="next.href"
-            class="subheading mx-3"
-            target="_blank"
-          >{{ next.text }}</a>
-        </v-row>
-      </v-col>
-
-      <v-col class="mb-5" cols="12">
-        <h2 class="headline font-weight-bold mb-3">Important Links</h2>
-
-        <v-row justify="center">
-          <a
-            v-for="(link, i) in importantLinks"
-            :key="i"
-            :href="link.href"
-            class="subheading mx-3"
-            target="_blank"
-          >{{ link.text }}</a>
+          <p></p>
         </v-row>
       </v-col>
     </v-row>
