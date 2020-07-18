@@ -17,7 +17,7 @@
 
         <p
           class="subheading font-weight-regular"
-        >Claims pipeline simplified thanks to <u>you</u></p>
+        >Claims pipeline simplified thanks to <i>you</i></p>
         <v-btn @click="skipLogin">Try it</v-btn>
       </v-col>
 
