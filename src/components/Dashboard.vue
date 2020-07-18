@@ -18,7 +18,9 @@
     <v-row no-gutters justify="end">
       <v-col lg="10">
         <v-row not-gutters justify="center" align="start" class="mb-9">
-          <h2><u>Welcome to the dashboard</u></h2>
+          <h2>
+            <u>Welcome to the dashboard</u>
+          </h2>
         </v-row>
         <v-row no-gutters justify="start" align="center">
           <v-row>
@@ -28,6 +30,7 @@
                 <apexchart type="bar" :options="deptChartOptions" :series="deptSeries" width="500"></apexchart>
               </div>
             </v-col>
+            <v-spacer></v-spacer>
             <v-col>
               <h3 class="ml-4">Transport Types</h3>
               <div id="transport-typechart">
@@ -40,21 +43,27 @@
               </div>
             </v-col>
             <v-row no-gutters justify="start" align="center">
-              <v-col class="ml-7">
-                <v-data-table dense :headers="freqHeaders" :items="topClaimsFreq" class="elevation-1">
+              <v-col class="ml-7" lg="5">
+                <v-data-table
+                  dense
+                  :headers="freqHeaders"
+                  :items="topClaimsFreq"
+                  class="elevation-1"
+                >
                   <template v-slot:top>
                     <v-toolbar color="blue lighten-4 blue--text text--darken-2" flat dense>
-                      <v-toolbar-title color="blue darken-2" fon>Top 10 Claimers by Frequency</v-toolbar-title>
+                      <v-toolbar-title color="blue darken-2">Top 10 Claimers by Frequency</v-toolbar-title>
                       <v-spacer></v-spacer>
                     </v-toolbar>
                   </template>
                 </v-data-table>
               </v-col>
-              <v-col class="ml-7">
-                <v-data-table dense :headers="amtHeaders" :items="topClaimsAmt" class="elevation-1">
+              <v-spacer></v-spacer>
+              <v-col class="ml-7" lg="5">
+                <v-data-table dense :headers="amtHeaders" :items="getClaimsAmt" class="elevation-1">
                   <template v-slot:top>
                     <v-toolbar color="blue lighten-4 blue--text text--darken-2" flat dense>
-                      <v-toolbar-title color="blue darken-2" fon>Top 10 Claimers by Single Amount</v-toolbar-title>
+                      <v-toolbar-title color="blue darken-2">Top 10 Claimers by Single Amount</v-toolbar-title>
                       <v-spacer></v-spacer>
                     </v-toolbar>
                   </template>
@@ -116,36 +125,36 @@ export default {
     departmentNames: [],
     departmentValues: [],
     amtHeaders: [
-        { text: "Emp ID", sortable: true, value: "empId" },
-      { text: "Claim Amount", sortable: true, value: "amt" },
+      { text: "Emp ID", sortable: true, value: "empId" },
+      { text: "Claim Amount ($)", sortable: true, value: "amt" }
     ],
     topClaimsAmt: [
-        {empId: "608", amt: 60},
-        {empId: "4128", amt: 57.90},
-        {empId: "438", amt: 55.00},
-        {empId: "3123", amt: 51.85},
-        {empId: "3233", amt: 50.90},
-        {empId: "4768", amt: 50.75},
-        {empId: "3338", amt: 50.70},
-        {empId: "3653", amt: 49.59},
-        {empId: "348", amt: 48.40},
-        {empId: "4998", amt: 46.70},
+      { empId: "608", amt: 60.0 },
+      { empId: "4128", amt: 57.9 },
+      { empId: "438", amt: 55.0 },
+      { empId: "3123", amt: 51.85 },
+      { empId: "3233", amt: 50.9 },
+      { empId: "4768", amt: 50.75 },
+      { empId: "3338", amt: 50.7 },
+      { empId: "3653", amt: 49.59 },
+      { empId: "348", amt: 48.4 },
+      { empId: "4998", amt: 46.7 }
     ],
     freqHeaders: [
-        { text: "Emp ID", sortable: true, value: "empId" },
-      { text: "Frequency of claim", sortable: true, value: "freq" },
+      { text: "Emp ID", sortable: true, value: "empId" },
+      { text: "Frequency of claim", sortable: true, value: "freq" }
     ],
     topClaimsFreq: [
-        {empId: "608", freq: 21},
-        {empId: "4028", freq: 16},
-        {empId: "438", freq: 11},
-        {empId: "3153", freq: 11},
-        {empId: "3233", freq: 11},
-        {empId: "3768", freq: 10},
-        {empId: "3338", freq: 10},
-        {empId: "3653", freq: 6},
-        {empId: "3498", freq: 5},
-        {empId: "4698", freq: 3},
+      { empId: "608", freq: 21 },
+      { empId: "4028", freq: 16 },
+      { empId: "438", freq: 11 },
+      { empId: "3153", freq: 11 },
+      { empId: "3233", freq: 11 },
+      { empId: "3768", freq: 10 },
+      { empId: "3338", freq: 10 },
+      { empId: "3653", freq: 6 },
+      { empId: "3498", freq: 5 },
+      { empId: "4698", freq: 3 }
     ],
     deptChartOptions: {
       chart: {
@@ -203,7 +212,17 @@ export default {
       var transportTypeList = allClaims.map(x => {
         return x.TYPE;
       });
-      console.log(this.wordFrequency(transportTypeList));
+      return transportTypeList
+    }
+  },
+  computed: {
+    getClaimsAmt() {
+      var items = this.topClaimsAmt.map(item => ({
+        empId: item.empId,
+        amt: (Math.round(item.amt * 100) / 100).toFixed(2)
+      }));
+      console.log(items)
+      return items
     }
   },
   created() {
@@ -212,13 +231,4 @@ export default {
   }
 };
 </script>
-<style scoped>
-.container {
-  max-width: 94vw;
-}
-</style>
-<style scoped>
-.v-toolbar-title {
-  font-size: 0.9em;
-}
-</style>
+
