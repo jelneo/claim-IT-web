@@ -25,13 +25,19 @@
         <v-data-table :headers="claimHeaders" :items="getClaimList" class="elevation-1">
           <template v-slot:top>
             <v-toolbar color="blue lighten-4 blue--text text--darken-2" flat>
-              <v-toolbar-title color="blue darken-2">Review All Non-risky Claims</v-toolbar-title>
+              <v-col>
+                <v-toolbar-title color="blue darken-2">Review All Non-risky Claims</v-toolbar-title>
+              </v-col>
+              <v-col cols="9">
+                <v-row justify="end">
+                  <v-btn>Submit</v-btn>
+                </v-row>
+              </v-col>
               <v-spacer></v-spacer>
             </v-toolbar>
           </template>
-          <template v-slot:item.actions="{ item }">
-            <!-- <v-icon small class="mr-2" @click="approve(item)">mdi-check</v-icon> -->
-            <v-icon small @click="reject(item)">mdi-check</v-icon>
+          <template v-slot:item.updateRisk="{ item }">
+            <v-simple-checkbox color="red darken-2" v-model="item.updateRisk"></v-simple-checkbox>
           </template>
           <template v-slot:item.status="{ item }">
             <v-chip small :color="getStatusColor(item.status)" dark>{{ item.status }}</v-chip>
@@ -109,7 +115,7 @@ export default {
       { text: "Journey start time", sortable: true, value: "journeyStartTime" },
       { text: "Claim amount ($)", sortable: true, value: "claimAmt" },
       // { text: "Flagged as risky", sortable: true, value: "risk" },
-      { text: "Should be risky?", value: "actions", sortable: false }
+      { text: "Should be risky?", value: "updateRisk", sortable: false }
     ],
     claimList: []
   }),
@@ -159,7 +165,8 @@ export default {
         journeyStartTime: item["JOURNEY.STR"],
         claimAmt: (Math.round(item["CLM.AMT"] * 100) / 100).toFixed(2),
         status: item.Status == 0 ? "Approved" : "Pending",
-        risk: item.RISK == 1 ? true : false
+        risk: item.RISK == 1 ? true : false,
+        updateRisk: false
       }));
       return items;
     }
