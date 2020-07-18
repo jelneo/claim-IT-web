@@ -79,6 +79,7 @@ export default {
   name: "Review",
   data: () => ({
     items: [
+      { title: "Dashboard", icon: "mdi-chart-arc", linkTo: "/dashboard" },
       { title: "Review current claims", icon: "mdi-pen", linkTo: "/review" },
       {
         title: "Review processed claims",
@@ -140,10 +141,7 @@ export default {
         transportType: item.TYPE,
         claimPurp: item.PURPOSE,
         journeyStartTime: item["JOURNEY.STR"],
-        claimAmt: (item["CLM.AMT"] / 1).toLocaleString("en-SG", {
-          style: "currency",
-          currency: "SGD"
-        }),
+        claimAmt: (Math.round(item["CLM.AMT"] * 100) / 100).toFixed(2),
         risk: item.RISK == 1 ? true : false
       }));
       return items;

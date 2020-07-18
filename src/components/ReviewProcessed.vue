@@ -33,7 +33,7 @@
             <v-icon small @click="reject(item)">mdi-close</v-icon>
           </template>
           <template v-slot:item.status="{ item }">
-            <v-chip :color="getStatusColor(item.status)" dark>{{ item.status }}</v-chip>
+            <v-chip small :color="getStatusColor(item.status)" dark>{{ item.status }}</v-chip>
           </template>
         </v-data-table>
       </v-col>
@@ -78,6 +78,7 @@ export default {
   name: "ReviewProcessed",
   data: () => ({
     items: [
+      { title: "Dashboard", icon: "mdi-chart-arc", linkTo: "/dashboard" },
       { title: "Review current claims", icon: "mdi-pen", linkTo: "/review" },
       {
         title: "Review processed claims",
@@ -101,7 +102,7 @@ export default {
       },
       { text: "Claim purpose", sortable: true, value: "claimPurp" },
       { text: "Journey start time", sortable: true, value: "journeyStartTime" },
-      { text: "Claim amount", sortable: true, value: "claimAmt" },
+      { text: "Claim amount ($)", sortable: true, value: "claimAmt" },
       // { text: "Flagged as risky", sortable: true, value: "risk" },
       { text: "Action", value: "actions", sortable: false }
     ],
@@ -141,24 +142,21 @@ export default {
         empID: item.ID,
         dept: item.DEPT,
         clmSys: item["CLM.SYS"],
-        trvDT: new Date(item["TRV.DT"]).toLocaleDateString("en-SG"),
+        trvDT: typeof(item["TRV.DT"]) == "string" ? item["TRV.DT"] : new Date(item["TRV.DT"]).toLocaleDateString("en-SG"),
         subDT: new Date(item["CLM.SUB.DT"]).toLocaleDateString("en-SG"),
         dayOfClaim: item["Travel.Day.Name"].substring(0, 3),
         dayType: item["Travel.Day.Type"],
         transportType: item.TYPE,
         claimPurp: item.PURPOSE,
         journeyStartTime: item["JOURNEY.STR"],
-        claimAmt: (item["CLM.AMT"] / 1).toLocaleString("en-SG", {
-          style: "currency",
-          currency: "SGD"
-        }),
+        claimAmt: (Math.round(item["CLM.AMT"] * 100) / 100).toFixed(2),
         status: item.Status == 0 ? "Approved" : "Pending",
         risk: item.RISK == 1 ? true : false
       }));
       return items;
     }
   },
-  async created() {
+  created() {
     this.claimList = claims.filter(record => record.RISK == 0);
   }
 };
@@ -166,10 +164,5 @@ export default {
 <style scoped>
 .container {
   max-width: 94vw;
-}
-</style>
-<style scoped>
-.v-chip {
-  font-size: 0.9em;
 }
 </style>
