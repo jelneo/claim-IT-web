@@ -25,7 +25,7 @@
         <v-data-table :headers="claimHeaders" :items="getClaimList" class="elevation-1">
           <template v-slot:top>
             <v-toolbar color="blue lighten-4 blue--text text--darken-2" flat>
-              <v-toolbar-title color="blue darken-2">Review Current Claims</v-toolbar-title>
+              <v-toolbar-title color="blue darken-2">Review Current Claims (Outliers)</v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
           </template>
@@ -104,7 +104,7 @@ export default {
       { text: "Journey start time", sortable: true, value: "journeyStartTime" },
       { text: "Claim amount ($)", sortable: true, value: "claimAmt" },
       { text: "Flagged as risky", sortable: true, value: "risk" },
-      { text: "Actions", value: "actions", sortable: false }
+      { text: "Approve?", value: "actions", sortable: false }
     ],
     claimList: []
   }),

@@ -30,7 +30,7 @@
           </template>
           <template v-slot:item.actions="{ item }">
             <!-- <v-icon small class="mr-2" @click="approve(item)">mdi-check</v-icon> -->
-            <v-icon small @click="reject(item)">mdi-close</v-icon>
+            <v-icon small @click="reject(item)">mdi-check</v-icon>
           </template>
           <template v-slot:item.status="{ item }">
             <v-chip small :color="getStatusColor(item.status)" dark>{{ item.status }}</v-chip>
@@ -104,7 +104,7 @@ export default {
       { text: "Journey start time", sortable: true, value: "journeyStartTime" },
       { text: "Claim amount ($)", sortable: true, value: "claimAmt" },
       // { text: "Flagged as risky", sortable: true, value: "risk" },
-      { text: "Action", value: "actions", sortable: false }
+      { text: "Should be rejected?", value: "actions", sortable: false }
     ],
     claimList: []
   }),
