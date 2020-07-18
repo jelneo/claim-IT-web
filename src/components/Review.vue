@@ -16,16 +16,16 @@
     </v-app-bar>
     <v-row no-gutters justify="end">
       <v-col lg="10">
-        <b>What are outlier claims?</b>
+        <b>What are current risky claims?</b>
         <p>
-          These claims have been flagged by our unsupervised learning model to have a possibility of being unauthorised.
-          Review the claim by clicking on the tick to approve and the cross to reject and our supervised learning model will learn your decision.
-          Similar future claims will be auto-processed leaving you with less work!
+          These claims have just been submitted and flagged by our model to have a possibility of being unauthorised.
+          Review the claim by clicking on the tick to approve and the cross to reject and our model will learn your decision.
         </p>
+        <p>Similar future claims will be auto-processed leaving you with less work.</p>
         <v-data-table :headers="claimHeaders" :items="getClaimList" class="elevation-1">
           <template v-slot:top>
             <v-toolbar color="blue lighten-4 blue--text text--darken-2" flat>
-              <v-toolbar-title color="blue darken-2">Review Current Claims (Outliers)</v-toolbar-title>
+              <v-toolbar-title color="blue darken-2">Review Current Risky Claims (Outliers)</v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
           </template>
@@ -80,9 +80,9 @@ export default {
   data: () => ({
     items: [
       { title: "Dashboard", icon: "mdi-chart-arc", linkTo: "/dashboard" },
-      { title: "Review current claims", icon: "mdi-pen", linkTo: "/review" },
+      { title: "Review current risky claims", icon: "mdi-pen", linkTo: "/review" },
       {
-        title: "Review processed claims",
+        title: "Review all non-risky claims",
         icon: "mdi-desktop-classic",
         linkTo: "/review-processed"
       }

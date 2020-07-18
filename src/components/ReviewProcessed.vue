@@ -16,15 +16,16 @@
     </v-app-bar>
     <v-row no-gutters justify="end">
       <v-col lg="10">
-        <b>What are non-risky processed claims?</b>
+        <b>What are all non-risky claims?</b>
         <p>
-          These claims have been auto-processed and labelled as not risky (i.e. high possibility of being an authentic and valid claim) but you can override the decision of the supervised learning model by clicking on the cross to reject the claim.
-          Risky claims are not shown here because they have been rejected automatically and the employee would have to resubmit the claim correctly.
+          These claims from the past and present have been approved manually and labelled as not risky (i.e. high possibility of being an authentic and valid claim) but you can help to train future models by clicking on the cross to flag the claim as risky.
+          This helps the model to learn and classify future claims more accurately.
+          Risky claims are not shown here because they have been manually approved or rejected by Finance team.
         </p>
         <v-data-table :headers="claimHeaders" :items="getClaimList" class="elevation-1">
           <template v-slot:top>
             <v-toolbar color="blue lighten-4 blue--text text--darken-2" flat>
-              <v-toolbar-title color="blue darken-2">Review Non-risky Processed Claims</v-toolbar-title>
+              <v-toolbar-title color="blue darken-2">Review All Non-risky Claims</v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
           </template>
@@ -79,9 +80,13 @@ export default {
   data: () => ({
     items: [
       { title: "Dashboard", icon: "mdi-chart-arc", linkTo: "/dashboard" },
-      { title: "Review current claims", icon: "mdi-pen", linkTo: "/review" },
       {
-        title: "Review processed claims",
+        title: "Review current risky claims",
+        icon: "mdi-pen",
+        linkTo: "/review"
+      },
+      {
+        title: "Review all non-risky claims",
         icon: "mdi-desktop-classic",
         linkTo: "/review-processed"
       }
@@ -104,7 +109,7 @@ export default {
       { text: "Journey start time", sortable: true, value: "journeyStartTime" },
       { text: "Claim amount ($)", sortable: true, value: "claimAmt" },
       // { text: "Flagged as risky", sortable: true, value: "risk" },
-      { text: "Should be rejected?", value: "actions", sortable: false }
+      { text: "Should be risky?", value: "actions", sortable: false }
     ],
     claimList: []
   }),
@@ -119,7 +124,7 @@ export default {
       if (status === "Pending") {
         return "yellow darken-2";
       }
-      return "green"
+      return "green";
     },
     approve(item) {
       // this.editedIndex = this.claimList
@@ -135,14 +140,17 @@ export default {
   },
   computed: {
     getClaimList() {
-      console.log(typeof(claims[0].Status))
+      console.log(typeof claims[0].Status);
 
       let items = this.claimList.map(item => ({
         clmRef: item["CLM.REF"],
         empID: item.ID,
         dept: item.DEPT,
         clmSys: item["CLM.SYS"],
-        trvDT: typeof(item["TRV.DT"]) == "string" ? item["TRV.DT"] : new Date(item["TRV.DT"]).toLocaleDateString("en-SG"),
+        trvDT:
+          typeof item["TRV.DT"] == "string"
+            ? item["TRV.DT"]
+            : new Date(item["TRV.DT"]).toLocaleDateString("en-SG"),
         subDT: new Date(item["CLM.SUB.DT"]).toLocaleDateString("en-SG"),
         dayOfClaim: item["Travel.Day.Name"].substring(0, 3),
         dayType: item["Travel.Day.Type"],

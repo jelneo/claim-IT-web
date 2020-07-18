@@ -115,9 +115,9 @@ export default {
   data: () => ({
     items: [
       { title: "Dashboard", icon: "mdi-chart-arc", linkTo: "/dashboard" },
-      { title: "Review current claims", icon: "mdi-pen", linkTo: "/review" },
+      { title: "Review current risky claims", icon: "mdi-pen", linkTo: "/review" },
       {
-        title: "Review processed claims",
+        title: "Review all non-risky claims",
         icon: "mdi-desktop-classic",
         linkTo: "/review-processed"
       }
@@ -177,7 +177,7 @@ export default {
     },
     deptSeries: [
       {
-        name: "series-1",
+        name: "No. of claims",
         data: [269, 316, 169, 204, 148, 297, 143, 166, 164]
       }
     ],
