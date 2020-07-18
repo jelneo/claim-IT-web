@@ -24,7 +24,7 @@
       <v-col class="mb-5" cols="12">
         <h2 class="headline font-weight-bold mb-3">How does it work?</h2>
         <p>Using past judgement from auditors and current judgement from processing new claims, we create a self-learning model that continuously learns the decision-making process behind approving or rejecting a claim. 
-          This is done by mannually approving or rejecting claims that are flagged as high risk by our unsupervised learning model. High risk claims are defined as claims that have a high possibility of being unauthorised for e.g. personal expenses.</p>
+          This is done by manually approving or rejecting claims that are flagged as high risk by our unsupervised learning model. High risk claims are defined as claims that have a high possibility of being unauthorised for e.g. personal expenses.</p>
         <v-row justify="center">
           <p></p>
         </v-row>
