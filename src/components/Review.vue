@@ -142,13 +142,13 @@ export default {
         claimPurp: item.PURPOSE,
         journeyStartTime: item["JOURNEY.STR"],
         claimAmt: (Math.round(item["CLM.AMT"] * 100) / 100).toFixed(2),
-        risk: item.RISK == 1 ? true : false
+        risk: item.Risk == 1 ? true : false
       }));
       return items;
     }
   },
   async created() {
-    this.claimList = claims;
+    this.claimList = claims.filter(x => x.Risk == 1);
   }
 };
 </script>
